@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
@@ -6,8 +7,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import javax.swing.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 
 /**
  * Defines the GUI for DashManager, serves as the MVC view, observes the model
@@ -17,6 +21,8 @@ public class DMGUI implements Observer{
     private TextField userTextField;
     private TextField addressTextField;
     private TextField privateKeyPathTextField;
+    private TextField backendPath;
+    private TextField frontendFiles;
     private CheckBox updateFrontend;
     private CheckBox updateBackend;
     private Button upload;
@@ -37,6 +43,10 @@ public class DMGUI implements Observer{
         privateKeyPathTextField.setPrefColumnCount(40);
         addressTextField = new TextField();
         addressTextField.setPrefColumnCount(40);
+        backendPath = new TextField();
+        backendPath.setPrefColumnCount(40);
+        frontendFiles = new TextField();
+        frontendFiles.setPrefColumnCount(40);
 
         updateFrontend = new CheckBox();
         updateBackend = new CheckBox();
@@ -52,7 +62,7 @@ public class DMGUI implements Observer{
                     command += frontendScript;
                 }
                 if(updateBackend.isSelected()){
-                    command += backendScript;
+                    command += ";" + backendScript;
                 }
 
                 if(!command.equals("")){
@@ -62,7 +72,7 @@ public class DMGUI implements Observer{
                             privateKeyPathTextField.getText(),
                             command);
                 }else{
-                    JOptionPane.showMessageDialog(null, "Must Specifiy Scripts!");
+                    JOptionPane.showMessageDialog(null, "Must Specify Scripts!");
                 }
             }
         });
@@ -111,6 +121,12 @@ public class DMGUI implements Observer{
         HBox addressBox = new HBox();
         addressBox.getChildren().addAll(new Label("Address"), addressTextField);
 
+        HBox backendPathBox = new HBox();
+        backendPathBox.getChildren().addAll(new Label("Backend Directory"), backendPath);
+
+        HBox frontendFilesBox = new HBox();
+        frontendFilesBox.getChildren().addAll(new Label("Frontend Files"), frontendFiles);
+
         HBox frontendBox = new HBox();
         frontendBox.getChildren().addAll(new Label("Update Frontend"), updateFrontend);
 
@@ -127,6 +143,8 @@ public class DMGUI implements Observer{
         controls.getChildren().addAll(privKeyBox,
                 userBox,
                 addressBox,
+                frontendFilesBox,
+                backendPathBox,
                 frontendBox,
                 backendBox,
                 editButtons,
@@ -136,12 +154,28 @@ public class DMGUI implements Observer{
         mainPane.setBottom(output);
     }
 
-    public void update(Observable observable, Object arg){
+    public void update(Observable observable, Object arg) {
         DMModel model = (DMModel) observable;
 
-        this.output.setText(model.getOutputString());
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                output.setText(model.getOutputString());
+                output.selectPositionCaret(output.getLength());
+                output.deselect();
 
-        this.frontendScript = model.getFrontendScript();
-        this.backendScript = model.getBackendScript();
+                privateKeyPathTextField.setText(model.getIdentityPath());
+                userTextField.setText(model.getUser());
+                addressTextField.setText(model.getAddress());
+                updateFrontend.setSelected(model.isUpdateFrontend());
+                updateBackend.setSelected(model.isUpdateBackend());
+                frontendScript = model.getFrontendScript();
+                backendScript = model.getBackendScript();
+                backendPath.setText(model.getBackendPath());
+                frontendFiles.setText(model.getFrontendFiles());
+            }
+        });
     }
+
+
 }

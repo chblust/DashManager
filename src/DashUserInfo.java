@@ -6,35 +6,49 @@ import javax.swing.*;
  * Defines behavior of the SSH library
  */
 public class DashUserInfo implements UserInfo{
+    private DMModel model;
+
+    private String password;
+    private String passphrase;
+
+    public DashUserInfo(DMModel model){
+        super();
+        this.model = model;
+    }
 
     @Override
     public String getPassphrase(){
-        return JOptionPane.showInputDialog(null,  "Enter Passphrase:");
+        return passphrase;
     }
 
     @Override
     public void showMessage(String s) {
-        JOptionPane.showMessageDialog(null,s);
+        model.appendOutput(s);
     }
 
     @Override
     public boolean promptPassphrase(String s){
+        DMController.showInputDialog("Passphrase", "Enter Passphrase: ", "").ifPresent(
+                (str) -> passphrase = str
+        );
         return true;
     }
 
     @Override
     public boolean promptPassword(String s) {
+        DMController.showInputDialog("Password", "Enter Password", "").ifPresent(
+                (str) -> password = str
+        );
         return true;
     }
 
     @Override
     public String getPassword() {
-        return JOptionPane.showInputDialog(null, "Enter Password:");
+        return password;
     }
 
     @Override
     public boolean promptYesNo(String s) {
-        Object[] options = {"yes","no"};
-        return 0==JOptionPane.showConfirmDialog(null, options);
+        return true;
     }
 }

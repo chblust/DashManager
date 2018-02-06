@@ -1,4 +1,7 @@
+import javafx.scene.control.TextInputDialog;
+
 import javax.swing.*;
+import java.util.Optional;
 
 /**
  * Handles user input from the DMGUI
@@ -10,6 +13,17 @@ public class DMController {
     public DMController(DMModel model){
         this.model = model;
         ssh = new SSHWrapper(model);
+    }
+
+    public static Optional<String> showInputDialog(String title, String prompt, String defaultText){
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle(title);
+        dialog.setHeaderText("");
+        dialog.setGraphic(null);
+        dialog.getEditor().setText(defaultText);
+        dialog.setContentText(prompt);
+        return dialog.showAndWait();
+
     }
 
     public boolean upload(String user, String address, String privateKeyPath, String command){
@@ -24,12 +38,12 @@ public class DMController {
     }
 
     public void editFrontendScript(){
-        String frontendScript = JOptionPane.showInputDialog(null, "Enter sh Script: ");
-        model.setFrontendScript(frontendScript);
+        showInputDialog("Frontend Script", "Enter sh Script: ", model.getFrontendScript()).ifPresent(
+                (str) -> model.setFrontendScript(str));
     }
 
     public void editBackendScript(){
-        String backendScript = JOptionPane.showInputDialog(null, "Enter sh Script");
-        model.setBackendScript(backendScript);
+        showInputDialog("Backend Script", "Enter sh Script: ", model.getBackendScript()).ifPresent(
+                (str) -> model.setBackendScript(str));
     }
 }

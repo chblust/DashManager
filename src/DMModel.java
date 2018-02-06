@@ -13,6 +13,8 @@ public class DMModel extends Observable{
     private boolean updateFrontend;
     private boolean updateBackend;
     private String identityPath;
+    private String backendPath;
+    private String frontendFiles;
 
     public DMModel(){
         outputString = "";
@@ -23,8 +25,22 @@ public class DMModel extends Observable{
         updateFrontend = true;
         updateBackend = true;
         identityPath = "";
+        backendPath = "";
+        frontendFiles = "";
         this.setChanged();
-        this.notifyObservers();
+    }
+
+    public DMModel(String pkp, String u, String a, String fs, String bs, boolean ufs, boolean ubs, String bp, String ff){
+        identityPath = pkp;
+        user = u;
+        address = a;
+        frontendScript = fs;
+        backendScript = bs;
+        updateFrontend = ufs;
+        updateBackend = ubs;
+        backendPath = bp;
+        frontendFiles = ff;
+        this.setChanged();
     }
 
     public String getOutputString(){return outputString;}
@@ -35,22 +51,58 @@ public class DMModel extends Observable{
     public boolean isUpdateFrontend(){return updateFrontend;}
     public boolean isUpdateBackend(){return updateBackend;}
     public String getIdentityPath(){return identityPath;}
+    public String getBackendPath(){return backendPath;}
+    public String getFrontendFiles(){return frontendFiles;}
 
     public void setFrontendScript(String s){
         frontendScript = s;
         this.setChanged();
-        this.notifyObservers();
     }
 
     public void setBackendScript(String s){
         backendScript = s;
         this.setChanged();
-        this.notifyObservers();
+    }
+
+    public void setUser(String u){
+        user = u;
+        this.setChanged();
+    }
+
+    public void setAddress(String a){
+        address = a;
+        this.setChanged();
+    }
+
+    public void setUpdateFrontend(boolean uf){
+        updateFrontend = uf;
+        this.setChanged();
+    }
+
+    public void setUpdateBackend(boolean ub){
+        updateBackend = ub;
+        this.setChanged();
+    }
+
+    public void setIdentityPath(String ip){
+        identityPath = ip;
+        this.setChanged();
+    }
+
+    public void setBackendPath(String bp){
+        backendPath = bp;
+        this.setChanged();
+    }
+
+    public void setFrontendFiles(String ff){
+        frontendFiles = ff;
+        this.setChanged();
     }
 
     public void appendOutput(String s){
-        this.outputString += s;
+        this.outputString += s + "\n";
         this.setChanged();
         this.notifyObservers();
     }
+
 }
