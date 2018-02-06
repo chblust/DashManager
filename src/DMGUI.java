@@ -2,6 +2,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 
@@ -15,29 +16,41 @@ public class DMGUI implements Observer{
     private BorderPane mainPane;
     private TextField userTextField;
     private TextField addressTextField;
+    private TextField privateKeyPathTextField;
     private CheckBox updateFrontend;
     private CheckBox updateBackend;
     private Button upload;
     private Button run;
     private Button editFrontendScript;
+    private String frontendScript;
+    private String backendScript;
     private Button editBackendScript;
+    private TextArea output;
+
+    private DMController controller;
 
     public DMGUI(){
         mainPane = new BorderPane();
-
         userTextField = new TextField();
         userTextField.setPrefColumnCount(40);
+        privateKeyPathTextField = new TextField();
+        privateKeyPathTextField.setPrefColumnCount(40);
         addressTextField = new TextField();
         addressTextField.setPrefColumnCount(40);
 
         updateFrontend = new CheckBox();
         updateBackend = new CheckBox();
 
+        controller = new DMController();
+
         upload = new Button("Upload");
         upload.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                uploadButtonPressed();
+                controller.upload(userTextField.getText(), addressTextField.getText(),
+                        privateKeyPathTextField.getText(),
+                        updateFrontend.isSelected(),
+                        updateBackend.isSelected());
             }
         });
 
@@ -45,7 +58,7 @@ public class DMGUI implements Observer{
         run.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                runButtonPressed();
+                controller.run();
             }
         });
 
@@ -53,7 +66,7 @@ public class DMGUI implements Observer{
         editFrontendScript.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                editFrontendScriptButtonPressed();
+                controller.editFrontendScript();
             }
         });
 
@@ -61,25 +74,12 @@ public class DMGUI implements Observer{
         editBackendScript.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                editBackendScriptButtonPressed();
+                controller.editBackendScript();
             }
         });
-    }
 
-    private void uploadButtonPressed(){
-
-    }
-
-    private void runButtonPressed(){
-
-    }
-
-    private void editFrontendScriptButtonPressed(){
-
-    }
-
-    private void editBackendScriptButtonPressed(){
-
+        frontendScript = "";
+        backendScript = "";
     }
 
     public void update(Observable observable, Object arg){

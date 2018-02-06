@@ -4,6 +4,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * GUI Interface for deploying Dashboard software to F26 via SSH
+ */
 public class DashManager extends Application {
 
     @Override
