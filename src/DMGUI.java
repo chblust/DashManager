@@ -1,10 +1,9 @@
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -29,8 +28,8 @@ public class DMGUI implements Observer{
 
     private DMController controller;
 
-    public DMGUI(){
-        mainPane = new BorderPane();
+    public DMGUI(BorderPane main){
+        mainPane = main;
         userTextField = new TextField();
         userTextField.setPrefColumnCount(40);
         privateKeyPathTextField = new TextField();
@@ -47,10 +46,21 @@ public class DMGUI implements Observer{
         upload.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                controller.upload(userTextField.getText(), addressTextField.getText(),
-                        privateKeyPathTextField.getText(),
-                        updateFrontend.isSelected(),
-                        updateBackend.isSelected());
+                String command = "";
+                if(updateFrontend.isSelected()){
+                    command += frontendScript;
+                }
+                if(updateBackend.isSelected()){
+                    command += backendScript;
+                }
+
+                if(!command.equals("")){
+                    controller.upload(
+                            userTextField.getText(),
+                            addressTextField.getText(),
+                            privateKeyPathTextField.getText(),
+                            command);
+                }
             }
         });
 
@@ -80,6 +90,46 @@ public class DMGUI implements Observer{
 
         frontendScript = "";
         backendScript = "";
+
+        output = new TextArea();
+        output.setPrefSize(300,300);
+
+        SetupGUI();
+    }
+
+    public void SetupGUI(){
+        HBox privKeyBox = new HBox();
+        privKeyBox.getChildren().addAll(new Label("Private Key Path"), privateKeyPathTextField);
+
+        HBox userBox = new HBox();
+        userBox.getChildren().addAll(new Label("User"), userTextField);
+
+        HBox addressBox = new HBox();
+        addressBox.getChildren().addAll(new Label("Address"), addressTextField);
+
+        HBox frontendBox = new HBox();
+        frontendBox.getChildren().addAll(new Label("Update Frontend"), updateFrontend);
+
+        HBox backendBox = new HBox();
+        backendBox.getChildren().addAll(new Label("Update Backend"), updateBackend);
+
+        HBox editButtons = new HBox();
+        editButtons.getChildren().addAll(editFrontendScript, editBackendScript);
+
+        HBox runButtons = new HBox();
+        runButtons.getChildren().addAll(upload, run);
+
+        VBox controls = new VBox();
+        controls.getChildren().addAll(privKeyBox,
+                userBox,
+                addressBox,
+                frontendBox,
+                backendBox,
+                editButtons,
+                runButtons);
+
+        mainPane.setCenter(controls);
+        mainPane.setBottom(output);
     }
 
     public void update(Observable observable, Object arg){

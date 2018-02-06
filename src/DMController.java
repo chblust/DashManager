@@ -9,11 +9,9 @@ public class DMController {
         model = new DMModel();
     }
 
-    public boolean upload(String user, String address, String privateKeyPath, boolean updateFrontend,
-                                       boolean updateBackend){
+    public boolean upload(String user, String address, String privateKeyPath, String command){
 
-        // TODO
-        return true;
+        return ssh.executeRemoteCommand(user, address, privateKeyPath, command);
 
     }
 
