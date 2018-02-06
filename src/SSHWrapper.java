@@ -3,6 +3,8 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.UserInfo;
 
+import java.io.FileNotFoundException;
+
 /**
  * Wraps the remote connection functionality (using JSch)
  * @author Chris Blust
@@ -19,7 +21,13 @@ public class SSHWrapper {
 
     public boolean executeRemoteCommand(String user, String address, String privateKeypath, String command){
         try {
-            jsch.addIdentity(privateKeypath);
+            if(privateKeypath != "") {
+                try {
+                    jsch.addIdentity(privateKeypath);
+                } catch (Exception e) {
+                    model.appendOutput("Could not find key file!\n");
+                }
+            }
 
             Session session = jsch.getSession(user, address, SSH_PORT);
             UserInfo ui = new DashUserInfo();
@@ -32,7 +40,7 @@ public class SSHWrapper {
 
             return true;
         }catch(Exception e){
-            System.err.println(e.getStackTrace());
+            e.printStackTrace();
             return false;
         }
     }

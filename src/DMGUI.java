@@ -5,6 +5,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import javax.swing.*;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -28,7 +29,7 @@ public class DMGUI implements Observer{
 
     private DMController controller;
 
-    public DMGUI(BorderPane main){
+    public DMGUI(BorderPane main, DMController con){
         mainPane = main;
         userTextField = new TextField();
         userTextField.setPrefColumnCount(40);
@@ -40,7 +41,7 @@ public class DMGUI implements Observer{
         updateFrontend = new CheckBox();
         updateBackend = new CheckBox();
 
-        controller = new DMController();
+        controller = con;
 
         upload = new Button("Upload");
         upload.setOnAction(new EventHandler<ActionEvent>() {
@@ -60,6 +61,8 @@ public class DMGUI implements Observer{
                             addressTextField.getText(),
                             privateKeyPathTextField.getText(),
                             command);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Must Specifiy Scripts!");
                 }
             }
         });
@@ -92,6 +95,7 @@ public class DMGUI implements Observer{
         backendScript = "";
 
         output = new TextArea();
+        output.setEditable(false);
         output.setPrefSize(300,300);
 
         SetupGUI();
@@ -133,6 +137,11 @@ public class DMGUI implements Observer{
     }
 
     public void update(Observable observable, Object arg){
+        DMModel model = (DMModel) observable;
 
+        this.output.setText(model.getOutputString());
+
+        this.frontendScript = model.getFrontendScript();
+        this.backendScript = model.getBackendScript();
     }
 }

@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 /**
  * Handles user input from the DMGUI
  * @author Chris Blust
@@ -5,8 +7,9 @@
 public class DMController {
     private DMModel model;
     private SSHWrapper ssh;
-    public DMController(){
-        model = new DMModel();
+    public DMController(DMModel model){
+        this.model = model;
+        ssh = new SSHWrapper(model);
     }
 
     public boolean upload(String user, String address, String privateKeyPath, String command){
@@ -21,10 +24,12 @@ public class DMController {
     }
 
     public void editFrontendScript(){
-        // TODO
+        String frontendScript = JOptionPane.showInputDialog(null, "Enter sh Script: ");
+        model.setFrontendScript(frontendScript);
     }
 
     public void editBackendScript(){
-        // TODO
+        String backendScript = JOptionPane.showInputDialog(null, "Enter sh Script");
+        model.setBackendScript(backendScript);
     }
 }

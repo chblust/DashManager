@@ -35,4 +35,22 @@ public class DMModel extends Observable{
     public boolean isUpdateFrontend(){return updateFrontend;}
     public boolean isUpdateBackend(){return updateBackend;}
     public String getIdentityPath(){return identityPath;}
+
+    public void setFrontendScript(String s){
+        frontendScript = s;
+        this.setChanged();
+        this.notifyObservers();
+    }
+
+    public void setBackendScript(String s){
+        backendScript = s;
+        this.setChanged();
+        this.notifyObservers();
+    }
+
+    public void appendOutput(String s){
+        this.outputString += s;
+        this.setChanged();
+        this.notifyObservers();
+    }
 }

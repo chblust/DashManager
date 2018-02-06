@@ -11,7 +11,10 @@ public class DashManager extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         BorderPane root = new BorderPane();
-        DMGUI gui = new DMGUI(root);
+        DMModel model = new DMModel();
+        DMController controller = new DMController(model);
+        DMGUI gui = new DMGUI(root, controller);
+        model.addObserver(gui);
         primaryStage.setTitle("DashManager");
         primaryStage.setScene(new Scene(root, 800, 500));
         primaryStage.show();
