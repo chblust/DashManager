@@ -36,7 +36,7 @@ public class DashManager extends Application {
         model.addObserver(gui);
         model.notifyObservers();
         primaryStage.setTitle("DashManager");
-        primaryStage.setScene(new Scene(root, 800, 500));
+        primaryStage.setScene(new Scene(root, 800, 700));
         primaryStage.show();
     }
 
@@ -52,15 +52,15 @@ public class DashManager extends Application {
                 String address = root.getElementsByTagName("address").item(0).getTextContent();
                 String backendPath = root.getElementsByTagName("backendPath").item(0).getTextContent();
                 String frontendFiles = root.getElementsByTagName("frontendFiles").item(0).getTextContent();
-                String frontendScript = root.getElementsByTagName("frontendScript").item(0).getTextContent();
-                String backendScript = root.getElementsByTagName("backendScript").item(0).getTextContent();
+                String buildScript = root.getElementsByTagName("buildScript").item(0).getTextContent();
+                String runScript = root.getElementsByTagName("runScript").item(0).getTextContent();
                 boolean updateFrontend = root.getElementsByTagName("updateFrontend").item(0).getTextContent().equals("true");
                 boolean updateBackend = root.getElementsByTagName("updateBackend").item(0).getTextContent().equals("true");
                 return new DMModel(privateKeyPath,
                         user,
                         address,
-                        frontendScript,
-                        backendScript,
+                        buildScript,
+                        runScript,
                         updateFrontend,
                         updateBackend,
                         backendPath,

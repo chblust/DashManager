@@ -1,7 +1,5 @@
 import com.jcraft.jsch.UserInfo;
 
-import javax.swing.*;
-
 /**
  * Defines behavior of the SSH library
  */

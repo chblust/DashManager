@@ -7,11 +7,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import javax.swing.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Optional;
 
 /**
  * Defines the GUI for DashManager, serves as the MVC view, observes the model
@@ -27,10 +24,10 @@ public class DMGUI implements Observer{
     private CheckBox updateBackend;
     private Button upload;
     private Button run;
-    private Button editFrontendScript;
-    private String frontendScript;
-    private String backendScript;
-    private Button editBackendScript;
+    private Button editBuildScript;
+    private String buildScript;
+    private String runScript;
+    private Button editRunScript;
     private TextArea output;
 
     private DMController controller;
@@ -58,18 +55,22 @@ public class DMGUI implements Observer{
             @Override
             public void handle(ActionEvent actionEvent) {
                 String command = "";
+                /*
                 if(updateFrontend.isSelected()){
-                    command += frontendScript;
+                    command += buildScript;
                 }
                 if(updateBackend.isSelected()){
-                    command += ";" + backendScript;
+                    command += ";" + runScript;
                 }
-
+                */
+                command = buildScript;
                 if(!command.equals("")){
                     controller.upload(
                             userTextField.getText(),
                             addressTextField.getText(),
                             privateKeyPathTextField.getText(),
+                            backendPath.getText(),
+                            frontendFiles.getText(),
                             command);
                 }else{
                     JOptionPane.showMessageDialog(null, "Must Specify Scripts!");
@@ -81,28 +82,33 @@ public class DMGUI implements Observer{
         run.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                controller.run();
+                controller.run(
+                        userTextField.getText(),
+                        addressTextField.getText(),
+                        privateKeyPathTextField.getText(),
+                        runScript
+                );
             }
         });
 
-        editFrontendScript = new Button("Edit Frontend Script");
-        editFrontendScript.setOnAction(new EventHandler<ActionEvent>() {
+        editBuildScript = new Button("Edit Build Script");
+        editBuildScript.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                controller.editFrontendScript();
+                controller.editBuildScript();
             }
         });
 
-        editBackendScript = new Button("Edit Backend Script");
-        editBackendScript.setOnAction(new EventHandler<ActionEvent>() {
+        editRunScript = new Button("Edit Run Script");
+        editRunScript.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                controller.editBackendScript();
+                controller.editRunScript();
             }
         });
 
-        frontendScript = "";
-        backendScript = "";
+        buildScript = "";
+        runScript = "";
 
         output = new TextArea();
         output.setEditable(false);
@@ -134,7 +140,7 @@ public class DMGUI implements Observer{
         backendBox.getChildren().addAll(new Label("Update Backend"), updateBackend);
 
         HBox editButtons = new HBox();
-        editButtons.getChildren().addAll(editFrontendScript, editBackendScript);
+        editButtons.getChildren().addAll(editBuildScript, editRunScript);
 
         HBox runButtons = new HBox();
         runButtons.getChildren().addAll(upload, run);
@@ -161,16 +167,15 @@ public class DMGUI implements Observer{
             @Override
             public void run() {
                 output.setText(model.getOutputString());
-                output.selectPositionCaret(output.getLength());
-                output.deselect();
+                output.setScrollTop(Double.MAX_VALUE);
 
                 privateKeyPathTextField.setText(model.getIdentityPath());
                 userTextField.setText(model.getUser());
                 addressTextField.setText(model.getAddress());
                 updateFrontend.setSelected(model.isUpdateFrontend());
                 updateBackend.setSelected(model.isUpdateBackend());
-                frontendScript = model.getFrontendScript();
-                backendScript = model.getBackendScript();
+                buildScript = model.getBuildScript();
+                runScript = model.getRunScript();
                 backendPath.setText(model.getBackendPath());
                 frontendFiles.setText(model.getFrontendFiles());
             }

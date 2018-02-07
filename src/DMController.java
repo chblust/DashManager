@@ -1,6 +1,8 @@
 import javafx.scene.control.TextInputDialog;
 
 import javax.swing.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Optional;
 
 /**
@@ -26,24 +28,24 @@ public class DMController {
 
     }
 
-    public boolean upload(String user, String address, String privateKeyPath, String command){
+    public boolean upload(String user, String address, String privateKeyPath, String backendPath, String frontendFiles,
+                          String command){
 
+        return ssh.transferFiles(user, address, privateKeyPath, frontendFiles)
+         && ssh.executeRemoteCommand(user, address, privateKeyPath, command);
+    }
+
+    public boolean run(String user, String address, String privateKeyPath, String command){
         return ssh.executeRemoteCommand(user, address, privateKeyPath, command);
-
     }
 
-    public boolean run(){
-        // TODO
-        return true;
+    public void editBuildScript(){
+        showInputDialog("Frontend Script", "Enter sh Script: ", model.getBuildScript()).ifPresent(
+                (str) -> model.setBuildScript(str));
     }
 
-    public void editFrontendScript(){
-        showInputDialog("Frontend Script", "Enter sh Script: ", model.getFrontendScript()).ifPresent(
-                (str) -> model.setFrontendScript(str));
-    }
-
-    public void editBackendScript(){
-        showInputDialog("Backend Script", "Enter sh Script: ", model.getBackendScript()).ifPresent(
-                (str) -> model.setBackendScript(str));
+    public void editRunScript(){
+        showInputDialog("Backend Script", "Enter sh Script: ", model.getRunScript()).ifPresent(
+                (str) -> model.setRunScript(str));
     }
 }

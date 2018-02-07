@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Observable;
 
 /**
@@ -6,8 +5,8 @@ import java.util.Observable;
  */
 public class DMModel extends Observable{
     private String outputString;
-    private String frontendScript;
-    private String backendScript;
+    private String buildScript;
+    private String runScript;
     private String user;
     private String address;
     private boolean updateFrontend;
@@ -18,8 +17,8 @@ public class DMModel extends Observable{
 
     public DMModel(){
         outputString = "";
-        frontendScript = "";
-        backendScript = "";
+        buildScript = "";
+        runScript = "";
         user = "";
         address = "";
         updateFrontend = true;
@@ -34,8 +33,8 @@ public class DMModel extends Observable{
         identityPath = pkp;
         user = u;
         address = a;
-        frontendScript = fs;
-        backendScript = bs;
+        buildScript = fs;
+        runScript = bs;
         updateFrontend = ufs;
         updateBackend = ubs;
         backendPath = bp;
@@ -44,8 +43,8 @@ public class DMModel extends Observable{
     }
 
     public String getOutputString(){return outputString;}
-    public String getFrontendScript(){return frontendScript;}
-    public String getBackendScript(){return backendScript;}
+    public String getBuildScript(){return buildScript;}
+    public String getRunScript(){return runScript;}
     public String getUser(){return user;}
     public String getAddress(){return address;}
     public boolean isUpdateFrontend(){return updateFrontend;}
@@ -54,13 +53,13 @@ public class DMModel extends Observable{
     public String getBackendPath(){return backendPath;}
     public String getFrontendFiles(){return frontendFiles;}
 
-    public void setFrontendScript(String s){
-        frontendScript = s;
+    public void setBuildScript(String s){
+        buildScript = s;
         this.setChanged();
     }
 
-    public void setBackendScript(String s){
-        backendScript = s;
+    public void setRunScript(String s){
+        runScript = s;
         this.setChanged();
     }
 
