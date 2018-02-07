@@ -18,10 +18,8 @@ public class DMGUI implements Observer{
     private TextField userTextField;
     private TextField addressTextField;
     private TextField privateKeyPathTextField;
-    private TextField backendPath;
+    private TextField backendFiles;
     private TextField frontendFiles;
-    private CheckBox updateFrontend;
-    private CheckBox updateBackend;
     private Button upload;
     private Button run;
     private Button editBuildScript;
@@ -40,13 +38,10 @@ public class DMGUI implements Observer{
         privateKeyPathTextField.setPrefColumnCount(40);
         addressTextField = new TextField();
         addressTextField.setPrefColumnCount(40);
-        backendPath = new TextField();
-        backendPath.setPrefColumnCount(40);
+        backendFiles = new TextField();
+        backendFiles.setPrefColumnCount(40);
         frontendFiles = new TextField();
         frontendFiles.setPrefColumnCount(40);
-
-        updateFrontend = new CheckBox();
-        updateBackend = new CheckBox();
 
         controller = con;
 
@@ -69,7 +64,7 @@ public class DMGUI implements Observer{
                             userTextField.getText(),
                             addressTextField.getText(),
                             privateKeyPathTextField.getText(),
-                            backendPath.getText(),
+                            backendFiles.getText(),
                             frontendFiles.getText(),
                             command);
                 }else{
@@ -127,17 +122,11 @@ public class DMGUI implements Observer{
         HBox addressBox = new HBox();
         addressBox.getChildren().addAll(new Label("Address"), addressTextField);
 
-        HBox backendPathBox = new HBox();
-        backendPathBox.getChildren().addAll(new Label("Backend Directory"), backendPath);
+        HBox backendFilesBox = new HBox();
+        backendFilesBox.getChildren().addAll(new Label("Backend Files"), backendFiles);
 
         HBox frontendFilesBox = new HBox();
         frontendFilesBox.getChildren().addAll(new Label("Frontend Files"), frontendFiles);
-
-        HBox frontendBox = new HBox();
-        frontendBox.getChildren().addAll(new Label("Update Frontend"), updateFrontend);
-
-        HBox backendBox = new HBox();
-        backendBox.getChildren().addAll(new Label("Update Backend"), updateBackend);
 
         HBox editButtons = new HBox();
         editButtons.getChildren().addAll(editBuildScript, editRunScript);
@@ -150,9 +139,7 @@ public class DMGUI implements Observer{
                 userBox,
                 addressBox,
                 frontendFilesBox,
-                backendPathBox,
-                frontendBox,
-                backendBox,
+                backendFilesBox,
                 editButtons,
                 runButtons);
 
@@ -172,11 +159,9 @@ public class DMGUI implements Observer{
                 privateKeyPathTextField.setText(model.getIdentityPath());
                 userTextField.setText(model.getUser());
                 addressTextField.setText(model.getAddress());
-                updateFrontend.setSelected(model.isUpdateFrontend());
-                updateBackend.setSelected(model.isUpdateBackend());
                 buildScript = model.getBuildScript();
                 runScript = model.getRunScript();
-                backendPath.setText(model.getBackendPath());
+                backendFiles.setText(model.getBackendFiles());
                 frontendFiles.setText(model.getFrontendFiles());
             }
         });

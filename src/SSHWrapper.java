@@ -12,6 +12,7 @@ public class SSHWrapper {
 
     private JSch jsch;
     private DMModel model;
+    private Session session;
     public SSHWrapper(DMModel model){
         jsch = new JSch();
         this.model = model;
@@ -19,6 +20,7 @@ public class SSHWrapper {
 
     public boolean executeRemoteCommand(String user, String address, String privateKeypath, String command){
         try {
+            /*
             if(privateKeypath != "") {
                 try {
                     jsch.addIdentity(privateKeypath);
@@ -32,6 +34,7 @@ public class SSHWrapper {
             UserInfo ui = new DashUserInfo(model);
             session.setUserInfo(ui);
             session.connect();
+            */
 
             model.appendOutput("Executing Script...");
             ChannelExec channel = (ChannelExec) session.openChannel("exec");
@@ -45,7 +48,7 @@ public class SSHWrapper {
             }
 
             channel.disconnect();
-            session.disconnect();
+            //session.disconnect();
             model.appendOutput("Upload Complete!");
             return true;
         }catch(ConnectException ce){
@@ -61,11 +64,13 @@ public class SSHWrapper {
         }
     }
 
-    public boolean transferFiles(String user, String address, String privateKeyPath, String fileString){
-        String[] files = fileString.split(" ");
+    public boolean transferFiles(String user, String address, String privateKeyPath, String frontendFiles, String backendFiles) {
+        String[] ffiles = frontendFiles.split(" ");
+        String[] bfiles = backendFiles.split(" ");
 
-        try{
-            if(privateKeyPath != "") {
+        try {
+            /*
+            if (privateKeyPath != "") {
                 try {
                     jsch.addIdentity(privateKeyPath);
                 } catch (Exception e) {
@@ -76,19 +81,39 @@ public class SSHWrapper {
             Session session = jsch.getSession(user, address, SSH_PORT);
             session.setUserInfo(new DashUserInfo(model));
             session.connect();
-
+            */
             ChannelSftp channel = (ChannelSftp) session.openChannel("sftp");
             channel.connect();
 
             channel.cd("f26dash/frontend");
-            for(String fileName : files){
+            for (String fileName : ffiles) {
                 channel.put(fileName, fileName);
+                System.out.println(fileName);
+            }
+
+            channel.cd("../backend/src");
+            for(String fileName : bfiles){
+                channel.put("../backend/backend/src/" + fileName,fileName);
+                System.out.println(fileName);
             }
             channel.disconnect();
-            session.disconnect();
+            //session.disconnect();
             model.appendOutput("Done with Transfer!");
 
             return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean connect(String user, String ip, String key){
+        try {
+            jsch.addIdentity(key);
+            session = jsch.getSession(user,ip,SSH_PORT);
+            session.setUserInfo(new DashUserInfo(model));
+            session.connect();
+            System.out.println("Connected");
         }catch(Exception e){
             e.printStackTrace();
         }

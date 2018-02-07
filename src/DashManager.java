@@ -17,7 +17,6 @@ import java.io.File;
  */
 public class DashManager extends Application {
 
-
     /**
      * Read from config or start fresh to create model, create MVC relationship
      * @param primaryStage
@@ -27,9 +26,7 @@ public class DashManager extends Application {
     public void start(Stage primaryStage) throws Exception{
         BorderPane root = new BorderPane();
 
-
         DMModel model = createModel();
-
 
         DMController controller = new DMController(model);
         DMGUI gui = new DMGUI(root, controller);
@@ -50,7 +47,7 @@ public class DashManager extends Application {
                 String privateKeyPath = root.getElementsByTagName("privateKeyPath").item(0).getTextContent();
                 String user = root.getElementsByTagName("user").item(0).getTextContent();
                 String address = root.getElementsByTagName("address").item(0).getTextContent();
-                String backendPath = root.getElementsByTagName("backendPath").item(0).getTextContent();
+                String backendPath = root.getElementsByTagName("backendFiles").item(0).getTextContent();
                 String frontendFiles = root.getElementsByTagName("frontendFiles").item(0).getTextContent();
                 String buildScript = root.getElementsByTagName("buildScript").item(0).getTextContent();
                 String runScript = root.getElementsByTagName("runScript").item(0).getTextContent();

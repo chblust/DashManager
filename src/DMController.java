@@ -1,8 +1,5 @@
 import javafx.scene.control.TextInputDialog;
 
-import javax.swing.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Optional;
 
 /**
@@ -15,6 +12,7 @@ public class DMController {
     public DMController(DMModel model){
         this.model = model;
         ssh = new SSHWrapper(model);
+        ssh.connect(model.getUser(), model.getAddress(), model.getIdentityPath());
     }
 
     public static Optional<String> showInputDialog(String title, String prompt, String defaultText){
@@ -28,10 +26,10 @@ public class DMController {
 
     }
 
-    public boolean upload(String user, String address, String privateKeyPath, String backendPath, String frontendFiles,
+    public boolean upload(String user, String address, String privateKeyPath, String backendFiles, String frontendFiles,
                           String command){
 
-        return ssh.transferFiles(user, address, privateKeyPath, frontendFiles)
+        return ssh.transferFiles(user, address, privateKeyPath, frontendFiles, backendFiles)
          && ssh.executeRemoteCommand(user, address, privateKeyPath, command);
     }
 

@@ -12,7 +12,7 @@ public class DMModel extends Observable{
     private boolean updateFrontend;
     private boolean updateBackend;
     private String identityPath;
-    private String backendPath;
+    private String backendFiles;
     private String frontendFiles;
 
     public DMModel(){
@@ -24,7 +24,7 @@ public class DMModel extends Observable{
         updateFrontend = true;
         updateBackend = true;
         identityPath = "";
-        backendPath = "";
+        backendFiles = "";
         frontendFiles = "";
         this.setChanged();
     }
@@ -37,7 +37,7 @@ public class DMModel extends Observable{
         runScript = bs;
         updateFrontend = ufs;
         updateBackend = ubs;
-        backendPath = bp;
+        backendFiles = bp;
         frontendFiles = ff;
         this.setChanged();
     }
@@ -50,7 +50,7 @@ public class DMModel extends Observable{
     public boolean isUpdateFrontend(){return updateFrontend;}
     public boolean isUpdateBackend(){return updateBackend;}
     public String getIdentityPath(){return identityPath;}
-    public String getBackendPath(){return backendPath;}
+    public String getBackendFiles(){return backendFiles;}
     public String getFrontendFiles(){return frontendFiles;}
 
     public void setBuildScript(String s){
@@ -88,8 +88,8 @@ public class DMModel extends Observable{
         this.setChanged();
     }
 
-    public void setBackendPath(String bp){
-        backendPath = bp;
+    public void setBackendFiles(String bp){
+        backendFiles = bp;
         this.setChanged();
     }
 
