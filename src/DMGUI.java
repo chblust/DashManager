@@ -156,12 +156,25 @@ public class DMGUI implements Observer{
                 output.setText(model.getOutputString());
                 output.setScrollTop(Double.MAX_VALUE);
 
+                if(privateKeyPathTextField.getText().equals(""))
                 privateKeyPathTextField.setText(model.getIdentityPath());
+
+                if(userTextField.getText().equals(""))
                 userTextField.setText(model.getUser());
+
+                if(addressTextField.getText().equals(""))
                 addressTextField.setText(model.getAddress());
+
+                if(buildScript.equals(""))
                 buildScript = model.getBuildScript();
+
+                if(runScript.equals(""))
                 runScript = model.getRunScript();
+
+                if(backendFiles.getText().equals(""))
                 backendFiles.setText(model.getBackendFiles());
+
+                if(frontendFiles.getText().equals(""))
                 frontendFiles.setText(model.getFrontendFiles());
             }
         });

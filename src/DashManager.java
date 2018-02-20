@@ -17,6 +17,8 @@ import java.io.File;
  */
 public class DashManager extends Application {
 
+    public static String OPTIONS_FILE = "deploy_options.xml"; // path of configuration xml
+
     /**
      * Read from config or start fresh to create model, create MVC relationship
      * @param primaryStage

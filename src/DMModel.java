@@ -1,3 +1,15 @@
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.IOException;
 import java.util.Observable;
 
 /**
@@ -102,6 +114,32 @@ public class DMModel extends Observable{
         this.outputString += s + "\n";
         this.setChanged();
         this.notifyObservers();
+    }
+
+    @Override
+    public void setChanged(){
+        try {
+            File file = new File(DashManager.OPTIONS_FILE);
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
+            doc.getDocumentElement().normalize();
+            Element root = doc.getDocumentElement();
+            root.getElementsByTagName("privateKeyPath").item(0).setTextContent(identityPath);
+            root.getElementsByTagName("user").item(0).setTextContent(user);
+            root.getElementsByTagName("address").item(0).setTextContent(address);
+            root.getElementsByTagName("backendFiles").item(0).setTextContent(backendFiles);
+            root.getElementsByTagName("frontendFiles").item(0).setTextContent(frontendFiles);
+            root.getElementsByTagName("buildScript").item(0).setTextContent(buildScript);
+            root.getElementsByTagName("runScript").item(0).setTextContent(runScript);
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(file);
+            transformer.transform(source, result);
+        }catch(IOException ioException){
+            System.err.println("Couldn't find the file you specified");
+        }catch(Exception e){
+            System.err.println("help.");
+        }
+        super.setChanged();
     }
 
 }

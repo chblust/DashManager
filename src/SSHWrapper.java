@@ -20,22 +20,6 @@ public class SSHWrapper {
 
     public boolean executeRemoteCommand(String user, String address, String privateKeypath, String command){
         try {
-            /*
-            if(privateKeypath != "") {
-                try {
-                    jsch.addIdentity(privateKeypath);
-                } catch (Exception e) {
-                    model.appendOutput("Could not find key file!");
-                }
-            }
-
-            model.appendOutput("Connecting to Session...");
-            Session session = jsch.getSession(user, address, SSH_PORT);
-            UserInfo ui = new DashUserInfo(model);
-            session.setUserInfo(ui);
-            session.connect();
-            */
-
             model.appendOutput("Executing Script...");
             ChannelExec channel = (ChannelExec) session.openChannel("exec");
             channel.setCommand(command);
@@ -48,7 +32,6 @@ public class SSHWrapper {
             }
 
             channel.disconnect();
-            //session.disconnect();
             model.appendOutput("Upload Complete!");
             return true;
         }catch(ConnectException ce){
@@ -69,19 +52,6 @@ public class SSHWrapper {
         String[] bfiles = backendFiles.split(" ");
 
         try {
-            /*
-            if (privateKeyPath != "") {
-                try {
-                    jsch.addIdentity(privateKeyPath);
-                } catch (Exception e) {
-                    model.appendOutput("Could not find key file!");
-                }
-            }
-
-            Session session = jsch.getSession(user, address, SSH_PORT);
-            session.setUserInfo(new DashUserInfo(model));
-            session.connect();
-            */
             ChannelSftp channel = (ChannelSftp) session.openChannel("sftp");
             channel.connect();
 
@@ -97,7 +67,7 @@ public class SSHWrapper {
                 System.out.println(fileName);
             }
             channel.disconnect();
-            //session.disconnect();
+
             model.appendOutput("Done with Transfer!");
 
             return true;

@@ -2,3 +2,5 @@
 lib
 out
 DashManager.iml
+deploy_options.xml
+test.txt

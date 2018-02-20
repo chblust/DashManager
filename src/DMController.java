@@ -28,7 +28,11 @@ public class DMController {
 
     public boolean upload(String user, String address, String privateKeyPath, String backendFiles, String frontendFiles,
                           String command){
-
+        model.setUser(user);
+        model.setAddress(address);
+        model.setIdentityPath(privateKeyPath);
+        model.setBackendFiles(backendFiles);
+        model.setFrontendFiles(frontendFiles);
         return ssh.transferFiles(user, address, privateKeyPath, frontendFiles, backendFiles)
          && ssh.executeRemoteCommand(user, address, privateKeyPath, command);
     }
