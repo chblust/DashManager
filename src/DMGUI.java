@@ -165,10 +165,10 @@ public class DMGUI implements Observer{
                 if(addressTextField.getText().equals(""))
                 addressTextField.setText(model.getAddress());
 
-                if(buildScript.equals(""))
+                //if(buildScript.equals(""))
                 buildScript = model.getBuildScript();
 
-                if(runScript.equals(""))
+                //if(runScript.equals(""))
                 runScript = model.getRunScript();
 
                 if(backendFiles.getText().equals(""))
