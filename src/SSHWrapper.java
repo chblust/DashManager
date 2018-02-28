@@ -89,4 +89,8 @@ public class SSHWrapper {
         }
         return false;
     }
+
+    public void close(){
+        this.session.disconnect();
+    }
 }

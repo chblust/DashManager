@@ -1,5 +1,7 @@
 import com.jcraft.jsch.UserInfo;
 
+import javax.swing.*;
+
 /**
  * Defines behavior of the SSH library
  */
@@ -34,7 +36,7 @@ public class DashUserInfo implements UserInfo{
 
     @Override
     public boolean promptPassword(String s) {
-        DMController.showInputDialog("Password", "Enter Password", "").ifPresent(
+        DMController.showInputDialog("Passphrase", "Enter Passphrase: ", "").ifPresent(
                 (str) -> password = str
         );
         return true;

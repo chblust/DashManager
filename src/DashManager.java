@@ -1,7 +1,9 @@
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -36,6 +38,12 @@ public class DashManager extends Application {
         model.notifyObservers();
         primaryStage.setTitle("DashManager");
         primaryStage.setScene(new Scene(root, 800, 700));
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                controller.disconnect();
+            }
+        });
         primaryStage.show();
     }
 

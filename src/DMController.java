@@ -1,5 +1,7 @@
+import javafx.scene.control.Dialog;
 import javafx.scene.control.TextInputDialog;
 
+import javax.swing.*;
 import java.util.Optional;
 
 /**
@@ -50,4 +52,9 @@ public class DMController {
         showInputDialog("Backend Script", "Enter sh Script: ", model.getRunScript()).ifPresent(
                 (str) -> model.setRunScript(str));
     }
+
+    public void disconnect(){
+        this.ssh.close();
+    }
+
 }
